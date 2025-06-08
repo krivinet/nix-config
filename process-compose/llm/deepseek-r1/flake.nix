@@ -12,7 +12,6 @@
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import inputs.systems;
-
       imports = [
         inputs.process-compose-flake.flakeModule
       ];
@@ -32,7 +31,7 @@
             settings = {
               environment = {
                 # Optional environment variables for Ollama or other integrations
-                OLLAMA_HOST = "localhost:${builtins.toString port}";
+                OLLAMA_HOST = "0.0.0.0:${builtins.toString port}";
               };
 
               processes = {
@@ -42,7 +41,7 @@
                     ${pkgs.ollama}/bin/ollama serve
                   '';
                   readiness_probe.http_get = {
-                    host = "localhost";
+                    host = "0.0.0.0";
                     inherit port;
                   };
                 };
